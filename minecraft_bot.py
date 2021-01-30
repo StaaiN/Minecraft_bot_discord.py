@@ -299,7 +299,7 @@ async def hypixel(ctx,*username):
         )
         if not username:
             embed.set_thumbnail(url="Hypixel PNG LINK")
-            embed.add_field(name="Hypixel", value="Hypixel general info ``/hypixel <username>``\nHypixel bedwars stats ``/hybedwars <username>``", inline=False)
+            embed.add_field(name="Hypixel", value="Hypixel general info ``/hypixel <username>``", inline=False)
             embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
             await ctx.send(embed=embed)
             return
@@ -325,43 +325,6 @@ async def hypixel(ctx,*username):
         await ctx.send(embed=embed)
     else:
         await ctx.send("**ERROR!!** Wrong username!")
-
-# hypixel bedwars stats
-@client.command(aliases=['Hybedwars', 'hybd'])
-@commands.cooldown(1, 10, commands.BucketType.user)
-async def hybedwars(ctx,*username):
-    async with ctx.typing():
-        embed = discord.Embed(
-        discription = "discription",
-        color = discord.Color.red()
-        )
-        if not username:
-            embed.add_field(name="Hypixel bedwars stats", value="**ERROR!!** Username not supplied!\nCommand example: ``/hybedwars <username>``", inline=False)
-            await ctx.send(embed=embed)
-            return
-
-    hburl = "https://api.slothpixel.me/api/players/" + username[0]
-    hbr = requests.get(url=hburl)
-    data = hbr.json()
-
-    if "username" in data and data.get("username") != 'null':
-        Source = data['stats']['BedWars']
-        FinalData = ''
-        for key in Source:
-            FinalData += str(key) + ' : ' + str(Source[key]) + '\n'
-            if str(key) == 'winstreak' :
-                break
-        for chunk in chunks(FinalData, 500):
-            embed.set_thumbnail(url="Hypixel PNG LINK")
-            embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
-            embed.add_field(name="Hypixel Bedwars Stats", value=f"Player: **{username[0]}**\n═════✽═════\n```{chunk}```", inline=False)
-            await ctx.send(embed=embed)
-    else:
-        await ctx.send("**ERROR!!** Wrong username!")
-
-def chunks(s, n):
-    for start in range(0, len(s), n):
-        yield s[start:start+n]
 
 ################################################################################################
 
