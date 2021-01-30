@@ -1,7 +1,7 @@
 # Minecraft_bot_discord.py
 A simple discord bot for minecraft stuff 
 
-Functions
+Functions:
 - help command
 - minecraft uuid
 - minecraft name history
