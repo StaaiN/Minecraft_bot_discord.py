@@ -9,7 +9,6 @@ import math
 import asyncio
 
 
-
 token = "YOUR TOKEN"
 
 #BOT prefix
