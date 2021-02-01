@@ -1,6 +1,4 @@
 # Minecraft_bot_discord.py
-A simple discord bot using mojang public api for minecraft stuff.
-
 Functions:
 - help command
 - minecraft uuid
