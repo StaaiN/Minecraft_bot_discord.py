@@ -1,3 +1,4 @@
+#imports
 import discord
 from discord.ext import commands
 import requests
@@ -9,22 +10,22 @@ import math
 import asyncio
 
 
-token = "YOUR TOKEN"
 
-#BOT prefix
+token = "[TOKEN]"
+
 client = commands.Bot(command_prefix="/")
 
 client.remove_command("help")
 
 
-#EVENTS
+
 @client.event
 async def on_ready():
     # await client.change_presence(activity=discord.Game(".help | " + str(len(client.guilds)) + " Servers."))
     await client.change_presence(activity=discord.Game("Minecraft | /help "))
     print("Ready")
 
-#COOLDOWN
+
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
@@ -35,30 +36,30 @@ async def on_command_error(ctx, error):
     else:
         print(error)
 
-
- #TO KNOW HOW MUCH SEVERS YOUR BOT IN
+ 
 @client.command(pass_context=True)
 @commands.cooldown(1, 300, commands.BucketType.user)
 async def botservers(ctx):
     await ctx.send("I'm in " + str(len(client.guilds)) + " servers")
 
 
-Minecrafticon = "YOUR ICON URL"
+Minecrafticon = "https://media.discordapp.net/attachments/693211390508400662/726384171252973578/stain.png"
+
 
 general = '''
     ``/uuid``  ``/namehistory``  ``/skin``  ``/cape`` 
     '''
 servers = '''
-    ``/hypixel``  ``/hivemc`` 
+    ``/server``  ``/hypixel``  ``/hivemc`` 
     '''
 mods = '''  
     ``/ofcape``  ``/labycape`` 
     '''
 links = '''
-    [INVITE TO YOUR SERVER]("YOUR INVITE LINK")
+    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=391232&scope=bot)
     '''
 
-#HELP COMMAND
+#help command
 @client.command(pass_context=True, aliases=['Help'])
 async def help(ctx):
     async with ctx.typing():
@@ -68,9 +69,13 @@ async def help(ctx):
             color = discord.Color.green()
         )
 
+        # embed.set_footer(text=)
+
+        # embed.set_image(url=Minecrafticon)
+
         embed.set_thumbnail(url=Minecrafticon)
 
-        embed.set_author(name="Bot Commands",
+        embed.set_author(name="Commands",
         icon_url=Minecrafticon)
 
         embed.add_field(name="General", value=general, inline=False)
@@ -79,11 +84,10 @@ async def help(ctx):
 
         embed.add_field(name="Mods", value=mods, inline=False)
 
-        embed.add_field(name="Links", value=f'{links}\n \nDeveloper: <@YOUR DISCORD ID>', inline=False)
-
-        # embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
+        embed.add_field(name="Links", value=f'{links}\n \nDeveloper: <@289106753277263872>', inline=False)
 
         await ctx.send(embed=embed)
+
 
 
 # Minecraft uuid ####################################################################################
@@ -169,6 +173,7 @@ async def skin(ctx, *args):
     if "username" in data and data.get("username") != 'null':
         uuid = data['uuid']
         originalskin = data['textures']['skin']['url']
+        # slim = data['textures']['slim']
         if data['textures']['slim']:
             skintype = 'Alex'
         else:
@@ -239,7 +244,7 @@ async def ofcape(ctx,*username):
 
     ofcapee = (f"http://s.optifine.net/capes/{username[0]}.png")
     embed.set_image(url=ofcapee)
-    embed.set_thumbnail(url="Optifine PNG LINK")
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/710552597886664774/757620869483725028/dt6nhzuB_400x400.jpg")
     embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
     embed.add_field(name="Optifine Cape", value="Player: "f"**{username[0]}**\n[Link]({ofcapee})", inline=False)
     ourl = f"http://s.optifine.net/capes/{username[0]}.png"
@@ -282,7 +287,7 @@ async def labycape(ctx,*username):
         await ctx.send("**ERROR!!** Wrong username or there no cape!")
     else:
         embed.set_image(url=lburl)
-        embed.set_thumbnail(url="Labymod PNG LINK")
+        embed.set_thumbnail(url="https://media.discordapp.net/attachments/710552597886664774/757621809070997504/C0c1z0mn_400x400.jpg")
         embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
         embed.add_field(name="Labymod Cape", value=f"Player: **{username[0]}**\n[Link]({lburl})", inline=False)
         await ctx.send(embed=embed)
@@ -298,7 +303,7 @@ async def hypixel(ctx,*username):
         color = discord.Color.red()
         )
         if not username:
-            embed.set_thumbnail(url="Hypixel PNG LINK")
+            embed.set_thumbnail(url="https://media.discordapp.net/attachments/710552597886664774/757624630725837017/mUnwMuh3_400x400.png")
             embed.add_field(name="Hypixel", value="Hypixel general info ``/hypixel <username>``", inline=False)
             embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
             await ctx.send(embed=embed)
@@ -319,7 +324,7 @@ async def hypixel(ctx,*username):
         total_kills = data['total_kills']
         total_wins = data['total_wins']
         total_coins = data['total_coins']
-        embed.set_thumbnail(url="Hypixel PNG LINK")
+        embed.set_thumbnail(url="https://media.discordapp.net/attachments/710552597886664774/757624630725837017/mUnwMuh3_400x400.png")
         embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
         embed.add_field(name="Hypixel Stats", value="Player: "f"**{username[0]}**\n"f"═════✽═════\nRank: **{rank}**\nLevel: **{clevel}**\nExp: **{exp}**\nKarma: **{karma}**\nAchievement points: **{achievement_points}**\nQuests completed: **{quests_completed}**\nTotal kills: **{total_kills}**\nTotal wins: **{total_wins}**\nTotal coins: **{total_coins}**", inline=False)
         await ctx.send(embed=embed)
@@ -355,13 +360,14 @@ async def hivemc(ctx,*username):
         rank = data['modernRank']['human']
         medals = data['medals']
         tokens = data['tokens']
-        # index = data['modernRank']['index']
-        embed.set_thumbnail(url="Hivemc PNG LINK")
+        embed.set_thumbnail(url="https://media.discordapp.net/attachments/710552597886664774/757633447840710716/uEAaSNCJ.png")
         embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
         embed.add_field(name="Hivemc Stats", value=f"Player: **{username[0]}**\n═════✽═════\nRank: **{rank}**\nTokens: **{tokens}**\nMedals: **{medals}**", inline=False)
         await ctx.send(embed=embed)
     else:
         await ctx.send("**ERROR!!** Wrong username!")
+
+
 
 
 client.run(token)
