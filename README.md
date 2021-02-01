@@ -3,7 +3,7 @@ Functions:
 - help command
 - minecraft uuid
 - minecraft name history
-- minecraft skins (using: https://visage.surgeplay.com/)
+- minecraft skins
 - minecraft capes
 - optifine capes
 - labymod capes
