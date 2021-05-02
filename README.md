@@ -1,5 +1,8 @@
 # Minecraft_bot_discord.py
-Functions:
+Installation:
+- pip install -r requirements.txt
+
+Bot Functions:
 - cooldown
 - bot servers(how many servers the bot in)
 - help command
