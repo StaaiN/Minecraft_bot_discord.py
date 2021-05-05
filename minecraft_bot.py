@@ -281,7 +281,7 @@ async def labycape(ctx,*username):
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
-    lburl = f"https://www.labymod.net/page/php/getCapeTexture.php?cape&uuid={uuid}"
+    lburl = f"https://dl.labymod.net/capes/{uuid}"
     lb = requests.get(url=lburl)
     if "not found" in lb.text:
         await ctx.send("**ERROR!!** Wrong username or there no cape!")
