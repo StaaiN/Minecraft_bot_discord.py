@@ -43,7 +43,7 @@ async def botservers(ctx):
     await ctx.send("I'm in " + str(len(client.guilds)) + " servers")
 
 
-Minecrafticon = "https://media.discordapp.net/attachments/693211390508400662/726384171252973578/stain.png"
+Minecrafticon = "ICON_URL"
 
 
 general = '''
@@ -56,7 +56,7 @@ mods = '''
     ``/ofcape``  ``/labycape`` 
     '''
 links = '''
-    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=391232&scope=bot)
+    [INVITE TO YOUR SERVER](INVITE_LINK)
     '''
 
 #help command
