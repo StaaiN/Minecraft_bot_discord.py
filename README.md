@@ -1,4 +1,5 @@
 requirements:
+- python3x
 - open cmd in the same direction and type
 ``pip install -r requirements.txt``
 
