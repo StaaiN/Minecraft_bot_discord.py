@@ -1,5 +1,5 @@
 requirements:
-open cmd in the same direction and type
+- open cmd in the same direction and type
 pip install -r requirements.txt
 
 
