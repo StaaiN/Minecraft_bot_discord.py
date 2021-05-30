@@ -1,4 +1,8 @@
-# Minecraft_bot_discord.py
+requirements:
+open cmd in the same direction and type
+pip install -r requirements.txt
+
+
 Installation:
 - pip install -r requirements.txt
 
