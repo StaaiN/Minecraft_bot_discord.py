@@ -3,10 +3,6 @@ requirements:
 - open cmd in the same direction and type
 ``pip install -r requirements.txt``
 
-
-Installation:
-- pip install -r requirements.txt
-
 Bot Functions:
 - cooldown
 - bot servers(how many servers the bot in)
