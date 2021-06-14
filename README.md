@@ -1,9 +1,9 @@
-requirements:
+Requirements:
 - python3x
 - open cmd in the same direction and type
 ``pip install -r requirements.txt``
 
-Bot Functions:
+Bot Commands:
 - cooldown
 - bot servers(how many servers the bot in)
 - help command
