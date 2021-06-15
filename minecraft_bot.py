@@ -268,7 +268,6 @@ async def server(ctx,*server):
         ip = data['ip']
         port = data['port']
         clean = data['motd']['clean']
-        clean = ([c.strip() for c in clean])
         players1 = data['players']['online']
         players2 = data['players']['max']
         version = data['version']
