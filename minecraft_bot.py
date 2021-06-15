@@ -71,7 +71,7 @@ mods = '''
     ``/ofcape``  ``/labycape`` 
     '''
 links = '''
-    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=391232&scope=bot)
+    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=2147875904&scope=bot)
     '''
 
 # help command
@@ -252,7 +252,7 @@ async def server(ctx,*server):
         embed = discord.Embed(
         color = discord.Color.green()
         )
-        file = discord.File(r'D:\Omar\Python\Discord Bots\MinecraftBot\server_icon.png')
+        file = discord.File(r'\server_icon.png')
         if not server:
             embed.add_field(name="Usage", value="``/server <server_address>``", inline=False)
             await ctx.send(embed=embed)
