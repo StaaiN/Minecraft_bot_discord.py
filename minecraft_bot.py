@@ -252,7 +252,7 @@ async def server(ctx,*server):
         embed = discord.Embed(
         color = discord.Color.green()
         )
-        file = discord.File(r'\server_icon.png')
+        file = discord.File('./server_icon.png', filename="server_icon.png")
         if not server:
             embed.add_field(name="Usage", value="``/server <server_address>``", inline=False)
             await ctx.send(embed=embed)
@@ -263,8 +263,9 @@ async def server(ctx,*server):
     except:
         print("Something went wrong!")
     data = rsp.json()
-
-    try:
+    status = data['online']
+    
+    if data['online'] == True:
         ip = data['ip']
         port = data['port']
         clean = data['motd']['clean']
@@ -279,9 +280,9 @@ async def server(ctx,*server):
             fh.write(base64.decodebytes(icon.encode()))
 
         embed.set_thumbnail(url="attachment://server_icon.png")
-        embed.add_field(name=f"{server[0]}'s status\n", value=f"```{clean[0]}\n{clean[1]}```**Hostname**: {hostname}\n**Players**: {players1}/{players2}\n**Version**: {version}\n**IP**: {ip}:{port}", inline=False)
+        embed.add_field(name=f"{server[0]}'s status\n", value=f"```{clean[0]}```**Hostname**: {hostname}\n**Players**: {players1}/{players2}\n**Version**: {version}\n**IP**: {ip}:{port}", inline=False)
         await ctx.send(file=file ,embed=embed)
-    except:
+    else:
         await ctx.send("**ERROR!!** Wrong server!")
 
 
