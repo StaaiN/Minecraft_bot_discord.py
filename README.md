@@ -3,7 +3,7 @@ Requirements:
 - open cmd in the same direction and type
 ``pip install -r requirements.txt``
 
-Bot commands:
+Bot functions:
 - cooldown
 - bot servers(how many servers the bot in)
 - help command
@@ -12,6 +12,5 @@ Bot commands:
 - minecraft skins
 - minecraft capes
 - optifine capes
-- labymod capes
 - hypixel player stats
 - Hivemc player stats
