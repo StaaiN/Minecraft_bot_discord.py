@@ -101,7 +101,7 @@ def UUID(username):
     try:
         data = rsp.json()
     except:
-        return "Wrong username!"
+        return False
     if rsp.status_code == 204 or rsp.status_code == 400:
         return "Wrong username!"
     elif rsp.text == '':
