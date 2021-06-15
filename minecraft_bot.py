@@ -129,7 +129,7 @@ async def uuid(ctx,*username):
 
     uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
 
-    if uuid == 'Wrong username!':
+    if UUID(username[0]) == 'Wrong username!':
         await ctx.send("**ERROR!!** Wrong username!")
     else:
         embed.set_thumbnail(url=f"https://visage.surgeplay.com/face/512/{uuid}")
@@ -190,7 +190,7 @@ async def skin(ctx, *args):
 
     uuid = UUID(username)[1] ; name = UUID(username)[0]
 
-    if uuid == 'Wrong username!':
+    if UUID(username[0]) == 'Wrong username!':
         await ctx.send("**ERROR!!** Wrong username!")
     else:
         uuid = uuid
