@@ -124,6 +124,7 @@ async def uuid(ctx,*username):
     if not username:
         embed.add_field(name="Usage", value="``/uuid <username>``", inline=False)
         await ctx.send(embed=embed)
+        return
 
     uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
 
@@ -147,6 +148,7 @@ async def namehistory(ctx,*username):
         if not username:
             embed.add_field(name="Usage", value="``/namehistory <username>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     url = "https://api.ashcon.app/mojang/v2/user/" + username[0]
     try:
@@ -185,6 +187,7 @@ async def skin(ctx, *args):
         if not username:
             embed.add_field(name="Usage", value="``/skin <username>``\n ``/skin <username> <head>`` \n``/skin <username> <face>``\n ``/skin <username> <front>``\n ``/skin <username> <frontfull>``\n ``/skin <username> <bust>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     uuid = UUID(username)[1] ; name = UUID(username)[0]
 
@@ -214,6 +217,7 @@ async def cape(ctx,*username):
         if not username:
             embed.add_field(name="Usage", value="``/cape <username>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     url = "https://api.ashcon.app/mojang/v2/user/" + username[0]
     try:
@@ -249,6 +253,7 @@ async def server(ctx,*server):
         if not server:
             embed.add_field(name="Usage", value="``/server <server_address>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     url = f"https://api.mcsrvstat.us/2/{server[0]}"
     try:
@@ -290,6 +295,7 @@ async def ofcape(ctx,*username):
         if not username:
             embed.add_field(name="Usage", value="``/ofcape <username>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
 
@@ -321,6 +327,7 @@ async def hypixel(ctx,*username):
             embed.add_field(name="Usage", value="``/hypixel <username>``", inline=False)
             embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
             await ctx.send(embed=embed)
+            return
 
     name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
 
@@ -360,6 +367,7 @@ async def hivemc(ctx,*username):
         if not username:
             embed.add_field(name="Hivemc", value="**ERROR!!** Username not supplied!\nCommand example: ``/hivemc <username>``", inline=False)
             await ctx.send(embed=embed)
+            return
 
     name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
 
@@ -383,6 +391,5 @@ async def hivemc(ctx,*username):
         await ctx.send(embed=embed)
     except:
         await ctx.send("**ERROR!!** Wrong username or no data found!")
-
 
 client.run(token)
