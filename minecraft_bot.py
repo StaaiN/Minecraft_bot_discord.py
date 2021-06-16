@@ -325,7 +325,6 @@ async def hypixel(ctx,*username):
         )
         if not username:
             embed.add_field(name="Usage", value="``/hypixel <username>``", inline=False)
-            embed.set_footer(icon_url= ctx.author.avatar_url, text= f"Requested by: {ctx.author}")
             await ctx.send(embed=embed)
             return
 
