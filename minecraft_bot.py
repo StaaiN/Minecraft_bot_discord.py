@@ -10,9 +10,8 @@ import math
 import asyncio
 
 
-
 # bot settings
-token = "BOT_TOKEN_HERE"
+token = "TOKEN_HERE"
 client = commands.Bot(command_prefix="/")
 client.remove_command("help")
 
@@ -21,7 +20,7 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game("Minecraft | /help "))
-    print('{0.user} bot is ready'.format(client))
+    print("Ready")
 
 @client.event
 async def on_command_error(ctx, error):
@@ -32,7 +31,6 @@ async def on_command_error(ctx, error):
         await asyncio.sleep(6)
     else:
         print(error, on_command_error)
-
 
 # how many servers the bot in
 @client.command(pass_context=True)
@@ -45,7 +43,7 @@ async def botservers(ctx):
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def ping(ctx):
     async with ctx.typing():
-        await ctx.send(f"**{round(client.latency *1000)}** milliseconds!")
+        await ctx.send(f"**{round(client.latency *1000)}**ms")
 
 # to logout the bot
 @client.command(hidden=False, aliases=['Kill', 'logout', 'Logout'])
@@ -68,10 +66,10 @@ servers = '''
     ``/server``  ``/hypixel``  ``/hivemc`` 
     '''
 mods = '''  
-    ``/ofcape``  ``/labycape`` 
+    ``/ofcape``
     '''
 links = '''
-    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=2147875904&scope=bot)
+    [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=391232&scope=bot)
     '''
 
 # help command
@@ -85,7 +83,7 @@ async def help(ctx):
         embed.add_field(name="General", value=general, inline=False)
         embed.add_field(name="Servers", value=servers, inline=False)
         embed.add_field(name="Mods", value=mods, inline=False)
-        embed.add_field(name="\u200b", value=f'{links}\n**Developer**: <@289106753277263872>', inline=False)
+        embed.add_field(name="Etc", value=f'``/ping``\n{links}\n**Developer**: <@289106753277263872>', inline=False)
         await ctx.send(embed=embed)
 
 
@@ -109,14 +107,14 @@ def UUID(username):
     elif 'error' in rsp.text:
         return "Wrong username!"
     else:
-        name = data['name']
-        uid = data['id']
+        name = str(data['name'])
+        uid = str(data['id'])
         return name, uid
 
 
 # Minecraft uuid ####################################################################################
 
-@client.command(aliases=['Uid', 'UID'])
+@client.command(aliases=['Uuid'])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def uuid(ctx,*username):
     async with ctx.typing():
@@ -139,7 +137,7 @@ async def uuid(ctx,*username):
 
 # minecraft name history ##############################################################################
 
-@client.command(aliases=['Namehistory', 'nh', 'NH'])
+@client.command(aliases=['Namehistory'])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def namehistory(ctx,*username):
     async with ctx.typing():
@@ -185,15 +183,10 @@ async def skin(ctx, *args):
             username = args[0]
             skin_part = args[1]
         if not username:
-            embed.add_field(name="Usage", value="``/skin <username>``\n ``/skin <username> <head>`` \nyou can choose between ``(face, head, bust, front, frontfull)`` for custom skin part.", inline=False)
+            embed.add_field(name="Usage", value="``/skin <username>``\n ``/skin <username> <head>`` \n``/skin <username> <face>``\n ``/skin <username> <front>``\n ``/skin <username> <frontfull>``\n ``/skin <username> <bust>``", inline=False)
             await ctx.send(embed=embed)
 
     uuid = UUID(username)[1] ; name = UUID(username)[0]
-
-    if UUID(username[0]) == 'Wrong username!':
-        await ctx.send("**ERROR!!** Wrong username!")
-    else:
-        uuid = uuid
 
     url = f"https://visage.surgeplay.com/{skin_part}/512/{uuid}"
     try:
@@ -202,7 +195,7 @@ async def skin(ctx, *args):
         print("Something went wrong!")
 
     if "400" in rsp.text:
-        await ctx.send("**ERROR!!** Wrong skin part!")
+        await ctx.send("**ERROR!!** Wrong username or skin part!")
     else:
         embed.set_image(url=url)
         embed.add_field(name=f"{name}'s Skin", value=f"\u200b", inline=False)
@@ -252,7 +245,7 @@ async def server(ctx,*server):
         embed = discord.Embed(
         color = discord.Color.green()
         )
-        file = discord.File('./server_icon.png', filename="server_icon.png")
+        file = discord.File('.\server_icon.png')
         if not server:
             embed.add_field(name="Usage", value="``/server <server_address>``", inline=False)
             await ctx.send(embed=embed)
@@ -264,10 +257,9 @@ async def server(ctx,*server):
         print("Something went wrong!")
     data = rsp.json()
     status = data['online']
-    
-    if data['online'] == True:
+
+    if status == True:
         ip = data['ip']
-        port = data['port']
         clean = data['motd']['clean']
         clean = ([c.strip() for c in clean])
         players1 = data['players']['online']
@@ -280,7 +272,7 @@ async def server(ctx,*server):
             fh.write(base64.decodebytes(icon.encode()))
 
         embed.set_thumbnail(url="attachment://server_icon.png")
-        embed.add_field(name=f"{server[0]}'s status\n", value=f"```{clean[0]}```**Hostname**: {hostname}\n**Players**: {players1}/{players2}\n**Version**: {version}\n**IP**: {ip}:{port}", inline=False)
+        embed.add_field(name=f"{server[0]}'s status\n", value=f"```{clean[0]}```\n**Hostname**: {hostname}\n**Players**: {players1}/{players2}\n**Version**: {version}\n**IP**: {ip}", inline=False)
         await ctx.send(file=file ,embed=embed)
     else:
         await ctx.send("**ERROR!!** Wrong server!")
@@ -288,7 +280,7 @@ async def server(ctx,*server):
 
 # optifine capes ###############################################################################
 
-@client.command(aliases=['Ofcape', 'of', 'OF'])
+@client.command(aliases=['Ofcape'])
 @commands.cooldown(1, 5, commands.BucketType.user)
 async def ofcape(ctx,*username):
     async with ctx.typing():
@@ -308,7 +300,7 @@ async def ofcape(ctx,*username):
         print("Something went wrong!")
 
     if "Not found" in rsp.text:
-        await ctx.send("**ERROR!!** Wrong username!")
+        await ctx.send("**ERROR!!** Wrong username or no cape found!")
     else:
         embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
         embed.add_field(name=f"{name}'s optifine cape", value="\u200b", inline=False)
@@ -344,7 +336,6 @@ async def hypixel(ctx,*username):
     else:
         rank = data['rank']
         level = int(data['level'])
-        # clevel = ("%d" % level) # or clevel = ("{:d}".format(level))
         exp = data['exp']
         karma = data['karma']
         achievement_points = data['achievement_points']
