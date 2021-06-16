@@ -5,7 +5,6 @@ import requests
 import json
 from tabulate import tabulate
 import base64
-import os
 import math
 import asyncio
 
