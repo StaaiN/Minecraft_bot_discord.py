@@ -1,7 +1,8 @@
 How to install? what's the requirements?:
 - python3x
 - open cmd in the same direction and type
-``pip install -r requirements.txt``
+``pip install -r requirements.txt`` or
+- pip install requests, discord, asyncio
 
 Usage:
 
