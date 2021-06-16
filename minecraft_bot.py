@@ -364,7 +364,7 @@ async def hivemc(ctx,*username):
         color = discord.Color.gold()
         )
         if not username:
-            embed.add_field(name="Hivemc", value="**ERROR!!** Username not supplied!\nCommand example: ``/hivemc <username>``", inline=False)
+            embed.add_field(name="Usage", value="``/hivemc <username>``", inline=False)
             await ctx.send(embed=embed)
             return
 
