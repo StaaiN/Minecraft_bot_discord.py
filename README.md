@@ -15,5 +15,5 @@ Bot functions:
 - hypixel player stats
 - Hivemc player stats
 
-# The bot is live now! you can try it here: [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=2147875904&scope=bot)
+# The bot is live now!: [INVITE TO YOUR SERVER](https://discord.com/api/oauth2/authorize?client_id=752660836153163846&permissions=2147875904&scope=bot)
 *Note `bot doesn't require administration permissions!`
