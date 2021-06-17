@@ -248,7 +248,7 @@ async def server(ctx,*server):
         embed = discord.Embed(
         color = discord.Color.green()
         )
-        file = discord.File('.\server_icon.png')
+        file = discord.File('./server_icon.png')
         if not server:
             embed.add_field(name="Usage", value="``/server <server_address>``", inline=False)
             await ctx.send(embed=embed)
@@ -271,12 +271,21 @@ async def server(ctx,*server):
         version = data['version']
         hostname = data['hostname']
 
+        # for onplayers in online_players:
+        #     onp = onplayers
+
         icon = data.get("icon").split(",")[1]
         with open("server_icon.png", "wb") as fh:
             fh.write(base64.decodebytes(icon.encode()))
 
         embed.set_thumbnail(url="attachment://server_icon.png")
-        embed.add_field(name=f"{server[0]}'s status\n", value=f"```{clean[0]}```\n**Hostname**: {hostname}\n**Players**: {players1}/{players2}\n**Version**: {version}\n**IP**: {ip}", inline=False)
+        try:
+            online_players = data['players']['list']
+            online_players = "\n".join([a for a in online_players])
+            embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}\n``{online_players}``", inline=False)
+            # embed.add_field(name="**Online Players**", value=f"{online_players}", inline=False)
+        except:
+            embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}", inline=False)
         await ctx.send(file=file ,embed=embed)
     else:
         await ctx.send("**ERROR!!** Wrong server!")
