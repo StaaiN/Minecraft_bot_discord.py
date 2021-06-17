@@ -271,9 +271,6 @@ async def server(ctx,*server):
         version = data['version']
         hostname = data['hostname']
 
-        # for onplayers in online_players:
-        #     onp = onplayers
-
         icon = data.get("icon").split(",")[1]
         with open("server_icon.png", "wb") as fh:
             fh.write(base64.decodebytes(icon.encode()))
