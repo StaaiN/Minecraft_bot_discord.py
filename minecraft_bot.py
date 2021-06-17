@@ -280,12 +280,11 @@ async def server(ctx,*server):
             online_players = data['players']['list']
             online_players = "\n".join([a for a in online_players])
             embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}\n``{online_players}``", inline=False)
-            # embed.add_field(name="**Online Players**", value=f"{online_players}", inline=False)
         except:
             embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}", inline=False)
         await ctx.send(file=file ,embed=embed)
     else:
-        await ctx.send("**ERROR!!** Wrong server!")
+        await ctx.send("**ERROR!!** Wrong or offline server!`")
 
 
 # optifine capes ###############################################################################
