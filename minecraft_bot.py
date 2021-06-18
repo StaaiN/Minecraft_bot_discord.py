@@ -19,14 +19,14 @@ client.remove_command("help")
 @client.event
 async def on_ready():
     await client.change_presence(activity=discord.Game("Minecraft | /help "))
-    print("Ready")
+    print('{0.user} bot is ready'.format(client))
 
 @client.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = await ctx.send("Cooldown!! please retry in **{}s**.".format(math.ceil(error.retry_after)))
         await asyncio.sleep(5)
-        await msg.delete()
+        await msg.delete()  
         await asyncio.sleep(6)
     else:
         print(error, on_command_error)
@@ -125,14 +125,15 @@ async def uuid(ctx,*username):
         await ctx.send(embed=embed)
         return
 
-    uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
-
-    if UUID(username[0]) == 'Wrong username!':
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
         await ctx.send("**ERROR!!** Wrong username!")
-    else:
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/face/512/{uuid}")
-        embed.add_field(name=f"{name}'s uuid", value=f"```{uuid}```", inline=False)
-        await ctx.send(embed=embed)
+        return
+
+    embed.set_thumbnail(url=f"https://visage.surgeplay.com/face/512/{uuid}")
+    embed.add_field(name=f"{name}'s uuid", value=f"```{uuid}```", inline=False)
+    await ctx.send(embed=embed)
 
 
 # minecraft name history ##############################################################################
@@ -153,18 +154,20 @@ async def namehistory(ctx,*username):
     try:
         rsp = requests.get(url=url)
     except:
-        print("Something went wrong!")
+        await ctx.send("Something went wrong!")
     data = rsp.json()
-    name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
 
-    if 'error' in rsp.text:
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
         await ctx.send("**ERROR!!** Wrong username!")
-    else:
-        nhistory = data['username_history']
-        nhistory = tabulate(nhistory,headers="keys")
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/head/512/{uuid}")
-        embed.add_field(name=f"{name}'s name history", value=f"```{nhistory}```", inline=False)
-        await ctx.send(embed=embed)
+        return
+
+    nhistory = data['username_history']
+    nhistory = tabulate(nhistory,headers="keys")
+    embed.set_thumbnail(url=f"https://visage.surgeplay.com/head/512/{uuid}")
+    embed.add_field(name=f"{name}'s name history", value=f"```{nhistory}```", inline=False)
+    await ctx.send(embed=embed)
 
 
 # minecraft skin ######################################################################################
@@ -187,17 +190,20 @@ async def skin(ctx, *args):
             embed.add_field(name="Usage", value="``/skin <username>``\n ``/skin <username> <head>`` \n``/skin <username> <face>``\n ``/skin <username> <front>``\n ``/skin <username> <frontfull>``\n ``/skin <username> <bust>``", inline=False)
             await ctx.send(embed=embed)
             return
-
-    uuid = UUID(username)[1] ; name = UUID(username)[0]
+    try:
+        uuid = UUID(username)[1] ; name = UUID(username)[0]
+    except:
+        await ctx.send("**ERROR!!** Wrong username!")
+        return
 
     url = f"https://visage.surgeplay.com/{skin_part}/512/{uuid}"
     try:
         rsp = requests.get(url=url)
     except:
-        print("Something went wrong!")
+        await ctx.send("Something went wrong!")
 
     if "400" in rsp.text:
-        await ctx.send("**ERROR!!** Wrong username or skin part!")
+        await ctx.send("**ERROR!!** Wrong skin part!")
     else:
         embed.set_image(url=url)
         embed.add_field(name=f"{name}'s Skin", value=f"\u200b", inline=False)
@@ -222,21 +228,23 @@ async def cape(ctx,*username):
     try:
         rsp = requests.get(url=url)
     except:
-        print("Something went wrong!")
+        await ctx.send("Something went wrong!")
     data = rsp.json()
-    name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
 
-    if 'error' in rsp.text:
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
         await ctx.send("**ERROR!!** Wrong username!")
+        return
+
+    if "cape" in data.get('textures'):
+        cape = data['textures']['cape']['url']
+        embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
+        embed.add_field(name=f"{name}'s cape", value=f"\u200b", inline=False)
+        embed.set_image(url=cape)
+        await ctx.send(embed=embed)
     else:
-        if "cape" in data.get('textures'):
-            cape = data['textures']['cape']['url']
-            embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
-            embed.add_field(name=f"{name}'s cape", value=f"\u200b", inline=False)
-            embed.set_image(url=cape)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send("**ERROR!!** You have no cape!")
+        await ctx.send("**ERROR!!** You have no cape!")
 
 
 # servers ###############################################################################
@@ -257,15 +265,16 @@ async def server(ctx,*server):
     url = f"https://api.mcsrvstat.us/2/{server[0]}"
     try:
         rsp = requests.get(url=url)
+        data = rsp.json()
+        status = data['online']
     except:
-        print("Something went wrong!")
-    data = rsp.json()
-    status = data['online']
+        await ctx.send("Something went wrong!")
+        return
 
     if status == True:
         ip = data['ip']
         clean = data['motd']['clean']
-        clean = ([c.strip() for c in clean])
+        clean = "\n".join([a for a in clean])
         players1 = data['players']['online']
         players2 = data['players']['max']
         version = data['version']
@@ -279,12 +288,12 @@ async def server(ctx,*server):
         try:
             online_players = data['players']['list']
             online_players = "\n".join([a for a in online_players])
-            embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}\n``{online_players}``", inline=False)
+            embed.add_field(name=f"Server status", value=f"```{clean}```\n**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}\n``{online_players}``", inline=False)
         except:
-            embed.add_field(name=f"Server status", value=f"```{clean[0]}```**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}", inline=False)
+            embed.add_field(name=f"Server status", value=f"```{clean}```\n**Hostname**: {hostname}\n**IP**: {ip}\n**Version**: {version}\n**Online Players**: {players1}/{players2}", inline=False)
         await ctx.send(file=file ,embed=embed)
     else:
-        await ctx.send("**ERROR!!** Wrong or offline server!`")
+        await ctx.send("**ERROR!!** Wrong server!")
 
 
 # optifine capes ###############################################################################
@@ -301,16 +310,21 @@ async def ofcape(ctx,*username):
             await ctx.send(embed=embed)
             return
 
-    name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
+        await ctx.send("**ERROR!!** Wrong username!")
+        return
 
     url = f"http://s.optifine.net/capes/{name}.png"
     try:
         rsp = requests.get(url)
     except:
-        print("Something went wrong!")
+        await ctx.send("Something went wrong!")
+        return
 
     if "Not found" in rsp.text:
-        await ctx.send("**ERROR!!** Wrong username or no cape found!")
+        await ctx.send("**ERROR!!** No cape found!")
     else:
         embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
         embed.add_field(name=f"{name}'s optifine cape", value="\u200b", inline=False)
@@ -332,30 +346,32 @@ async def hypixel(ctx,*username):
             await ctx.send(embed=embed)
             return
 
-    name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
+        await ctx.send("**ERROR!!** Wrong username!")
+        return
 
     url = "https://api.slothpixel.me/api/players/" + username[0]
     try:
-        rsp = requests.get(url)
+        rsp = requests.get(url, timeout=5)
+        data = rsp.json()
     except:
-        print("Something went wrong!")
-    data = rsp.json()
+        await ctx.send("**ERROR!!** Something went wrong!")
+        return
 
-    if 'error' in rsp.text:
-        await ctx.send("**ERROR!!** Wrong username!")
-    else:
-        rank = data['rank']
-        level = int(data['level'])
-        exp = data['exp']
-        karma = data['karma']
-        achievement_points = data['achievement_points']
-        quests_completed = data['quests_completed']
-        total_kills = data['total_kills']
-        total_wins = data['total_wins']
-        total_coins = data['total_coins']
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/bust/512/{uuid}")
-        embed.add_field(name=f"{name}'s stats", value=f"**Rank**: {rank}\n**Level**: {level}\n**Exp**: {exp}\n**Karma**: {karma}\n**Achievement points**: {achievement_points}\n**Quests completed**: {quests_completed}\n**Total kills**: {total_kills}\n**Total wins**: {total_wins}\n**Total coins**: {total_coins}", inline=False)
-        await ctx.send(embed=embed)
+    rank = data['rank']
+    level = int(data['level'])
+    exp = data['exp']
+    karma = data['karma']
+    achievement_points = data['achievement_points']
+    quests_completed = data['quests_completed']
+    total_kills = data['total_kills']
+    total_wins = data['total_wins']
+    total_coins = data['total_coins']
+    embed.set_thumbnail(url=f"https://visage.surgeplay.com/bust/512/{uuid}")
+    embed.add_field(name=f"{name}'s stats", value=f"**Rank**: {rank}\n**Level**: {level}\n**Exp**: {exp}\n**Karma**: {karma}\n**Achievement points**: {achievement_points}\n**Quests completed**: {quests_completed}\n**Total kills**: {total_kills}\n**Total wins**: {total_wins}\n**Total coins**: {total_coins}", inline=False)
+    await ctx.send(embed=embed)
 
 
 # Hivemc #######################################################################################
@@ -372,17 +388,20 @@ async def hivemc(ctx,*username):
             await ctx.send(embed=embed)
             return
 
-    name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
+    try:
+        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+    except:
+        await ctx.send("**ERROR!!** Wrong username!")
+        return
 
     url = "https://api.hivemc.com/v1/player/" + username[0]
     try:
         rsp = requests.get(url=url)
-    except:
-        print("Something went wrong!")
-    try:
         data = rsp.json()
     except:
-        data = {}
+        await ctx.send("Something went wrong!")
+        return
+
     try:
         rank = data['modernRank']['human']
         medals = data['medals']
@@ -394,5 +413,6 @@ async def hivemc(ctx,*username):
         await ctx.send(embed=embed)
     except:
         await ctx.send("**ERROR!!** Wrong username or no data found!")
+
 
 client.run(token)
