@@ -189,7 +189,7 @@ async def skin(ctx, *username):
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
-    url = f"https://minepic.org/skin/{name}"
+    url = f"https://minepic.org/skin/512/{name}"
     try:
         rsp = requests.get(url=url)
     except:
