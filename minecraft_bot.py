@@ -184,7 +184,7 @@ async def skin(ctx, *username):
             await ctx.send(embed=embed)
             return
     try:
-        name = UUID(username[0])[0]
+        name = UUID(username[0])[0] ; uuid = UUID(username[0])[1]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
@@ -196,9 +196,12 @@ async def skin(ctx, *username):
         await ctx.send("Something went wrong!")
         return
 
-    embed.set_image(url=url)
-    embed.add_field(name=f"{name}'s skin", value=f"\u200b", inline=False)
-    await ctx.send(embed=embed)
+    if "400" in rsp.text:
+        await ctx.send("**ERROR!!** Wrong skin part!")
+    else:
+        embed.set_image(url=url)
+        embed.add_field(name=f"{name}'s skin", value=f"[Download](https://minepic.org/download/{uuid})", inline=False)
+        await ctx.send(embed=embed)
 
 
 # minecraft capes #####################################################################################
