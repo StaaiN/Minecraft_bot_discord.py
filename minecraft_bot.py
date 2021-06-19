@@ -131,7 +131,7 @@ async def uuid(ctx,*username):
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
-    embed.set_thumbnail(url=f"https://visage.surgeplay.com/face/512/{uuid}")
+    embed.set_thumbnail(url=f"https://cravatar.eu/helmavatar/{name}/190.png")
     embed.add_field(name=f"{name}'s uuid", value=f"```{uuid}```", inline=False)
     await ctx.send(embed=embed)
 
@@ -153,19 +153,19 @@ async def namehistory(ctx,*username):
     url = "https://api.ashcon.app/mojang/v2/user/" + username[0]
     try:
         rsp = requests.get(url=url)
+        data = rsp.json()
     except:
         await ctx.send("Something went wrong!")
-    data = rsp.json()
 
     try:
-        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
     nhistory = data['username_history']
     nhistory = tabulate(nhistory,headers="keys")
-    embed.set_thumbnail(url=f"https://visage.surgeplay.com/head/512/{uuid}")
+    embed.set_thumbnail(url=f"https://cravatar.eu/helmhead/{name}/190.png")
     embed.add_field(name=f"{name}'s name history", value=f"```{nhistory}```", inline=False)
     await ctx.send(embed=embed)
 
@@ -174,40 +174,31 @@ async def namehistory(ctx,*username):
 
 @client.command(aliases=['Skin'])
 @commands.cooldown(1, 5, commands.BucketType.user)
-async def skin(ctx, *args):
+async def skin(ctx, *username):
     async with ctx.typing():
         embed = discord.Embed(
         color = discord.Color.green()
         )
-        username = None
-        skin_part = "full"
-        if len(args) == 1:
-            username = args[0]
-        elif len(args) == 2:
-            username = args[0]
-            skin_part = args[1]
         if not username:
-            embed.add_field(name="Usage", value="``/skin <username>``\n ``/skin <username> <head>`` \n``/skin <username> <face>``\n ``/skin <username> <front>``\n ``/skin <username> <frontfull>``\n ``/skin <username> <bust>``", inline=False)
+            embed.add_field(name="Usage", value="``/skin <username>``", inline=False)
             await ctx.send(embed=embed)
             return
     try:
-        uuid = UUID(username)[1] ; name = UUID(username)[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
-    url = f"https://visage.surgeplay.com/{skin_part}/512/{uuid}"
+    url = f"https://minepic.org/skin/{name}"
     try:
         rsp = requests.get(url=url)
     except:
         await ctx.send("Something went wrong!")
+        return
 
-    if "400" in rsp.text:
-        await ctx.send("**ERROR!!** Wrong skin part!")
-    else:
-        embed.set_image(url=url)
-        embed.add_field(name=f"{name}'s Skin", value=f"\u200b", inline=False)
-        await ctx.send(embed=embed)
+    embed.set_image(url=url)
+    embed.add_field(name=f"{name}'s skin", value=f"\u200b", inline=False)
+    await ctx.send(embed=embed)
 
 
 # minecraft capes #####################################################################################
@@ -227,20 +218,21 @@ async def cape(ctx,*username):
     url = "https://api.ashcon.app/mojang/v2/user/" + username[0]
     try:
         rsp = requests.get(url=url)
+        data = rsp.json()
     except:
         await ctx.send("Something went wrong!")
-    data = rsp.json()
+        return
 
     try:
-        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
 
     if "cape" in data.get('textures'):
         cape = data['textures']['cape']['url']
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
-        embed.add_field(name=f"{name}'s cape", value=f"\u200b", inline=False)
+        embed.set_thumbnail(url=f"https://minotar.net/armor/bust/{name}/190.png")
+        embed.add_field(name=f"{name}'s mojang cape", value=f"\u200b", inline=False)
         embed.set_image(url=cape)
         await ctx.send(embed=embed)
     else:
@@ -311,7 +303,7 @@ async def ofcape(ctx,*username):
             return
 
     try:
-        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
@@ -326,7 +318,7 @@ async def ofcape(ctx,*username):
     if "Not found" in rsp.text:
         await ctx.send("**ERROR!!** No cape found!")
     else:
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/frontfull/512/{uuid}")
+        embed.set_thumbnail(url=f"https://minotar.net/armor/bust/{name}/190.png")
         embed.add_field(name=f"{name}'s optifine cape", value="\u200b", inline=False)
         embed.set_image(url=url)
         await ctx.send(embed=embed)
@@ -347,7 +339,7 @@ async def hypixel(ctx,*username):
             return
 
     try:
-        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
@@ -369,7 +361,7 @@ async def hypixel(ctx,*username):
     total_kills = data['total_kills']
     total_wins = data['total_wins']
     total_coins = data['total_coins']
-    embed.set_thumbnail(url=f"https://visage.surgeplay.com/bust/512/{uuid}")
+    embed.set_thumbnail(url=f"https://minotar.net/armor/bust/{name}/190.png")
     embed.add_field(name=f"{name}'s stats", value=f"**Rank**: {rank}\n**Level**: {level}\n**Exp**: {exp}\n**Karma**: {karma}\n**Achievement points**: {achievement_points}\n**Quests completed**: {quests_completed}\n**Total kills**: {total_kills}\n**Total wins**: {total_wins}\n**Total coins**: {total_coins}", inline=False)
     await ctx.send(embed=embed)
 
@@ -389,7 +381,7 @@ async def hivemc(ctx,*username):
             return
 
     try:
-        uuid = UUID(username[0])[1] ; name = UUID(username[0])[0]
+        name = UUID(username[0])[0]
     except:
         await ctx.send("**ERROR!!** Wrong username!")
         return
@@ -408,7 +400,7 @@ async def hivemc(ctx,*username):
         tokens = data['tokens']
         medals = data['medals']
         creditss = data['credits']
-        embed.set_thumbnail(url=f"https://visage.surgeplay.com/bust/512/{uuid}")
+        embed.set_thumbnail(url=f"https://minotar.net/armor/bust/{name}/190.png")
         embed.add_field(name=f"{name}'s stats", value=f"**Rank**: {rank}\n**Tokens**: {tokens}\n**Medals**: {medals}\n**Medals**: {medals}\n**Credits**: {creditss}", inline=False)
         await ctx.send(embed=embed)
     except:
